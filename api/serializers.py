@@ -12,6 +12,12 @@ class ProductSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("Price must be grater than 0.")
         return value
+    
+
+class ProductInfoSerializer(serializers.Serializer):
+    products = ProductSerializer(many=True)
+    count = serializers.IntegerField()
+    max_price = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
