@@ -1,42 +1,42 @@
+from django.db.models import Max
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.db.models import Max
+from rest_framework import generics
 
-from .serializers import ProductSerializer, OrderSerializer, ProductInfoSerializer
-from .models import Product, Order
-
-
-@api_view(['GET'])
-def product_list(request):
-    products = Product.objects.all()
-    serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+from .models import Order, Product
+from .serializers import OrderSerializer, ProductInfoSerializer, ProductSerializer
 
 
-@api_view(['GET'])
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    serializer = ProductSerializer(product)
-    return Response(serializer.data)
+
+class ProductList(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
-@api_view(['GET'])
-def order_list(request):
-    orders = Order.objects.prefetch_related('items', 'items__product')
-    serializer = OrderSerializer(orders, many=True)
-    return Response(serializer.data)
+class ProductDetail(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    
+    
+
+class OrderList(generics.ListAPIView):
+    queryset = Order.objects.prefetch_related("items", "items__product")
+    serializer_class = OrderSerializer
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def product_info(request):
     products = Product.objects.all()
     data = {
-        'products': products,
-        'count': products.count,
-        'max_price': products.aggregate(max_price=Max('price'))['max_price']
+        "products": products,
+        "count": products.count,
+        "max_price": products.aggregate(max_price=Max("price"))["max_price"],
     }
     serializer = ProductInfoSerializer(data)
     return Response(serializer.data)
-    
-    
+
+
+product_list = ProductList.as_view()
+product_detail = ProductDetail.as_view()
+order_list = OrderList.as_view()
