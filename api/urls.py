@@ -11,6 +11,6 @@ urlpatterns = [
     path('products/<int:pk>/', views.product_detail),
     
     path('orders/', views.order_list), 
-    path('user-orders/', views.user_order_list), 
+    path('user-orders/', views.user_order_list, name="user-orders"), 
     # path('orders/<int:pk>', views.order_detail),
 ]
