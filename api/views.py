@@ -10,7 +10,7 @@ from .serializers import OrderSerializer, ProductInfoSerializer, ProductSerializ
 
 
 
-class ProductList(generics.ListAPIView):
+class ProductListCreate(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -49,7 +49,7 @@ class ProductInfo(APIView):
         return Response(serializer.data)
 
 
-product_list = ProductList.as_view()
+product_list = ProductListCreate.as_view()
 product_detail = ProductDetail.as_view()
 product_info = ProductInfo.as_view()
 order_list = OrderList.as_view()
