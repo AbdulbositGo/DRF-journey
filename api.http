@@ -1,0 +1,17 @@
+GET http://localhost:8000/products/ HTTP/1.1
+
+
+###
+
+POST http://localhost:8000/products/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Iphone 17",
+    "price": 1899.99,
+    "stock": 1000000000,
+    "description": "The new Iphone comes with the new A19 pro chip and AppleIntelegent"
+}
+
+
+###
